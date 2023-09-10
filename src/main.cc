@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Color.h"
 #include "Ray.h"
+#include "Renderer.h"
 
 Color ray_color(const Ray& r) {
   auto a = 0.5 * (r.direction().normalized().y() + 1);
@@ -20,15 +21,8 @@ int main() {
   Camera camera(image_width, image_height);
 
   // Render
-  auto file = std::ofstream("image.ppm");
-  file << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-
-  for (int j = 0; j < image_height; ++j)
-    for (int i = 0; i < image_width; ++i)
-      write_color(file, ray_color(camera.ray(i, j)));
-
-  std::clog << "Done!" << std::endl;
-  file.close();
+  render([&camera](auto i, auto j) { return ray_color(camera.ray(i, j)); },
+         image_width, image_height);
 
   return 0;
 }
