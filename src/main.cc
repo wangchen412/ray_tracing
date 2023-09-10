@@ -5,11 +5,7 @@
 #include "Color.h"
 #include "Ray.h"
 #include "Renderer.h"
-
-Color ray_color(const Ray& r) {
-  auto a = 0.5 * (r.direction().normalized().y() + 1);
-  return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);
-}
+#include "Sphere.h"
 
 int main() {
   // Image
@@ -20,8 +16,11 @@ int main() {
   // Camera
   Camera camera(image_width, image_height);
 
+  // Objects
+  Sphere s({0, 0, -1}, 0.5);
+
   // Render
-  render([&camera](auto i, auto j) { return ray_color(camera.ray(i, j)); },
+  render([&](auto i, auto j) { return ray_color(camera.ray(i, j), s); },
          image_width, image_height);
 
   return 0;

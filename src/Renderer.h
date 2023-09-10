@@ -1,5 +1,13 @@
 #include <fstream>
 
+template <typename T>
+Color ray_color(const Ray& r, const T& t) {
+  if (t.hit(r)) return {1, 0, 0};
+
+  auto a = 0.5 * (r.direction().normalized().y() + 1);
+  return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);
+}
+
 template <typename Func>
 void render(Func f, int image_width, int image_height) {
   auto file = std::ofstream("image.ppm");
