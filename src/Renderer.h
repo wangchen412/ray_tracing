@@ -2,7 +2,11 @@
 
 template <typename T>
 Color ray_color(const Ray& r, const T& t) {
-  if (t.hit(r)) return {1, 0, 0};
+  Point hit_position;
+  if (t.hit(r, &hit_position)) {
+    Vector normal = t.normal(hit_position);
+    return (normal + Vector(1, 1, 1)) / 2;
+  }
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);

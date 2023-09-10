@@ -6,5 +6,6 @@ class Sphere {
 
  public:
   Sphere(const Point& center, double radius);
-  bool hit(const Ray& ray) const;
+  bool hit(const Ray& ray, Point* position = nullptr) const;
+  Vector normal(const Point& position) const;
 };
