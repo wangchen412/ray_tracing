@@ -1,10 +1,7 @@
 #ifndef RT_RAY_H
 #define RT_RAY_H
 
-#include <Eigen/Dense>
-
-using Vector = Eigen::Vector3d;
-using Point = Vector;
+#include "Math.h"
 
 class Ray {
   Point origin_;
