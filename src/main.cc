@@ -3,6 +3,7 @@
 
 #include "Camera.h"
 #include "Color.h"
+#include "HittableList.h"
 #include "Ray.h"
 #include "Renderer.h"
 #include "Sphere.h"
@@ -17,10 +18,11 @@ int main() {
   Camera camera(image_width, image_height);
 
   // Objects
-  Sphere s({0, 0, -1}, 0.5);
+  HittableList objects(std::make_shared<Sphere>(Point(-1, 0, -3), 0.5));
+  objects.add(std::make_shared<Sphere>(Point(1, 0, -2), 0.5));
 
   // Render
-  render([&](auto i, auto j) { return ray_color(camera.ray(i, j), s); },
+  render([&](auto i, auto j) { return ray_color(camera.ray(i, j), objects); },
          image_width, image_height);
 
   return 0;

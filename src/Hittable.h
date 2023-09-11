@@ -4,9 +4,17 @@
 #include "Ray.h"
 
 struct HitRecord {
+  double t;
   Point position;
   Vector normal;
-  double t;
+  bool front_face;
+
+  template <typename T>
+  void set_face_normal(const Ray& ray, const T& hittable) {
+    auto outward_normal = hittable.normal(position);
+    front_face = ray.direction().dot(outward_normal) < 0;
+    normal = front_face ? outward_normal : -outward_normal;
+  }
 };
 
 class Hittable {

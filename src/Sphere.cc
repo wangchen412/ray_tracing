@@ -22,7 +22,8 @@ bool Sphere::hit(const Ray& ray, double tmin, double tmax,
 
   rec.t = root;
   rec.position = ray.at(root);
-  rec.normal = normal(rec.position);
+  rec.set_face_normal(ray, *this);
+
   return true;
 }
 
