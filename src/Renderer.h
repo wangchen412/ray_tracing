@@ -1,12 +1,12 @@
 #include <fstream>
 
-template <typename T>
-Color ray_color(const Ray& r, const T& t) {
-  Point hit_position;
-  if (t.hit(r, &hit_position)) {
-    Vector normal = t.normal(hit_position);
-    return (normal + Vector(1, 1, 1)) / 2;
-  }
+#include "Hittable.h"
+
+Color ray_color(const Ray& r, const Hittable& t)
+{
+  HitRecord rec;
+  if (t.hit(r, 0, 100, rec))
+    return (rec.normal + Vector(1, 1, 1)) / 2;
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);

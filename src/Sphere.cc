@@ -3,15 +3,27 @@
 Sphere::Sphere(const Point& center, double radius)
     : center_(center), radius_(radius) {}
 
-bool Sphere::hit(const Ray& ray, Point* position) const {
+bool Sphere::hit(const Ray& ray, double tmin, double tmax,
+                 HitRecord& rec) const {
   auto d = ray.origin() - center_;
   auto a = ray.direction().squaredNorm();
   auto h = ray.direction().dot(d);
   auto c = d.squaredNorm() - radius_ * radius_;
   auto dis = h * h - a * c;
-  bool real_root = dis >= 0;
-  if (position && real_root) *position = ray.at((-h - std::sqrt(dis)) / a);
-  return real_root;
+
+  if (dis < 0) return false;
+  auto sqrt_dis = std::sqrt(dis);
+
+  auto root = (-h - sqrt_dis) / a;
+  if (root <= tmin || root >= tmax) {
+    root = (-h + sqrt_dis) / a;
+    if (root <= tmin || root >= tmax) return false;
+  }
+
+  rec.t = root;
+  rec.position = ray.at(root);
+  rec.normal = normal(rec.position);
+  return true;
 }
 
 Vector Sphere::normal(const Point& position) const {
