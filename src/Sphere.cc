@@ -3,7 +3,7 @@
 Sphere::Sphere(const Point& center, double radius)
     : center_(center), radius_(radius) {}
 
-bool Sphere::hit(const Ray& ray, double tmin, double tmax,
+bool Sphere::hit(const Ray& ray, const Interval& interval,
                  HitRecord& rec) const {
   auto d = ray.origin() - center_;
   auto a = ray.direction().squaredNorm();
@@ -15,9 +15,9 @@ bool Sphere::hit(const Ray& ray, double tmin, double tmax,
   auto sqrt_dis = std::sqrt(dis);
 
   auto root = (-h - sqrt_dis) / a;
-  if (root <= tmin || root >= tmax) {
+  if (!interval.surrounds(root)) {
     root = (-h + sqrt_dis) / a;
-    if (root <= tmin || root >= tmax) return false;
+    if (!interval.surrounds(root)) return false;
   }
 
   rec.t = root;

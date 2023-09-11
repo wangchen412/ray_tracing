@@ -1,6 +1,7 @@
 #ifndef RT_HITTABLE_H
 #define RT_HITTABLE_H
 
+#include "Interval.h"
 #include "Ray.h"
 
 struct HitRecord {
@@ -19,7 +20,7 @@ struct HitRecord {
 
 class Hittable {
  public:
-  virtual bool hit(const Ray& ray, double tmin, double tmax,
+  virtual bool hit(const Ray& ray, const Interval& interval,
                    HitRecord& rec) const = 0;
 };
 

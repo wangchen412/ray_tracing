@@ -5,7 +5,7 @@
 Color ray_color(const Ray& r, const Hittable& t)
 {
   HitRecord rec;
-  if (t.hit(r, 0, 100, rec))
+  if (t.hit(r, {0, inf}, rec))
     return (rec.normal + Vector(1, 1, 1)) / 2;
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);

@@ -19,7 +19,7 @@ class HittableList : public Hittable {
   void add(Hittable_ptr object);
   void clear();
 
-  bool hit(const Ray& ray, double tmin, double tmax,
+  bool hit(const Ray& ray, const Interval& interval,
            HitRecord& rec) const override;
 };
 

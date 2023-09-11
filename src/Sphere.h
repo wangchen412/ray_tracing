@@ -7,6 +7,7 @@ class Sphere : public Hittable {
 
  public:
   Sphere(const Point& center, double radius);
-  bool hit(const Ray& ray, double tmin, double tmax, HitRecord& rec) const override;
+  bool hit(const Ray& ray, const Interval& interval,
+           HitRecord& rec) const override;
   Vector normal(const Point& position) const;
 };
