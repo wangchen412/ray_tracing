@@ -15,15 +15,17 @@ Camera::Camera(int image_width, int image_height)
 }
 
 auto Camera::at(int i, int j) const { return i * du_ + j * dv_ + pixel_zero_; }
-auto Camera::ray_direction(int i, int j) const { return at(i, j) - center_; }
-Ray Camera::ray(int i, int j) const {
-  return Ray(center_, ray_direction(i, j));
+Ray Camera::ray(int i, int j) const { return {center_, at(i, j) - center_}; }
+Ray Camera::ray_sample_square(int i, int j) const {
+  return {center_, at(i, j) + d_sample_square() - center_};
 }
 
-static void write_color(std::ostream& os, const Color& color) {
-  os << static_cast<int>(255.999 * color[0]) << ' '
-     << static_cast<int>(255.999 * color[1]) << ' '
-     << static_cast<int>(255.999 * color[2]) << '\n';
+void Camera::write_color(std::ostream& os, const Color& c, int n) {
+  Interval interval(0, 0.999);
+  auto s = 1.0 / n;
+  os << static_cast<int>(256 * interval.clamp(c[0] * s)) << ' '
+     << static_cast<int>(256 * interval.clamp(c[1] * s)) << ' '
+     << static_cast<int>(256 * interval.clamp(c[2] * s)) << '\n';
 }
 
 void Camera::render(const Hittable& objects) const {
@@ -32,8 +34,12 @@ void Camera::render(const Hittable& objects) const {
   for (int j = 0; j < image_height_; ++j) {
     std::clog << "\rScanlines remaining: " << (image_height_ - j) << ' '
               << std::flush;
-    for (int i = 0; i < image_width_; ++i)
-      write_color(file, ray_color(ray(i, j), objects));
+    for (int i = 0; i < image_width_; ++i) {
+      Color c(0, 0, 0);
+      for (int k = 0; k < samples_; ++k)
+        c += ray_color(ray_sample_square(i, j), objects);
+      write_color(file, c, samples_);
+    }
   }
   std::clog << "\rDone!                    " << std::endl;
   file.close();
@@ -45,4 +51,8 @@ Color Camera::ray_color(const Ray& r, const Hittable& t) {
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);
+}
+
+Vector Camera::d_sample_square() const {
+  return du_ * (random_double() - 0.5) + dv_ * (random_double() - 0.5);
 }
