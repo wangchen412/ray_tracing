@@ -49,7 +49,7 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
   if (depth <= 0) return {};
 
   HitRecord rec;
-  if (t.hit(r, {0, inf}, rec))
+  if (t.hit(r, {0.001, inf}, rec))
     return 0.5 * ray_color({rec.position, random_on_hemisphere(r.direction())},
                            depth - 1, t);
 
