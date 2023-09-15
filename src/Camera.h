@@ -6,7 +6,7 @@
 
 class Camera {
   Point center_{0, 0, 0};
-  int image_width_, image_height_, samples_{10};
+  int image_width_, image_height_, samples_{10}, max_depth_{10};
   double focal_{1}, height_{2}, width_;
   Vector u_, v_, du_, dv_;
   Point upper_left_, pixel_zero_;
@@ -15,7 +15,7 @@ class Camera {
   Ray ray(int i, int j) const;
   Ray ray_sample_square(int i, int j) const;
   Vector d_sample_square() const;
-  static Color ray_color(const Ray& r, const Hittable& t);
+  static Color ray_color(const Ray& r, int depth, const Hittable& t);
   static void write_color(std::ostream& os, const Color& c, int n = 1);
 
  public:

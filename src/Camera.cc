@@ -37,7 +37,7 @@ void Camera::render(const Hittable& objects) const {
     for (int i = 0; i < image_width_; ++i) {
       Color c(0, 0, 0);
       for (int k = 0; k < samples_; ++k)
-        c += ray_color(ray_sample_square(i, j), objects);
+        c += ray_color(ray_sample_square(i, j), max_depth_, objects);
       write_color(file, c, samples_);
     }
   }
@@ -45,11 +45,13 @@ void Camera::render(const Hittable& objects) const {
   file.close();
 }
 
-Color Camera::ray_color(const Ray& r, const Hittable& t) {
+Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
+  if (depth <= 0) return {};
+
   HitRecord rec;
   if (t.hit(r, {0, inf}, rec))
-    return 0.5 *
-           ray_color({rec.position, random_on_hemisphere(r.direction())}, t);
+    return 0.5 * ray_color({rec.position, random_on_hemisphere(r.direction())},
+                           depth - 1, t);
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);
