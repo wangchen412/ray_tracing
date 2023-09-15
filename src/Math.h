@@ -25,4 +25,16 @@ inline double random_double(double min, double max) {
   return min + random_double() * (max - min);
 }
 
+inline Vector random_unit_vector() {
+  Vector v;
+  do v.setRandom();
+  while (v.squaredNorm() > 1);
+  return v.normalized();
+}
+
+inline Vector random_on_hemisphere(const Vector& n) {
+  auto v = random_unit_vector();
+  return n.dot(v) > 0 ? v : -v;
+}
+
 #endif

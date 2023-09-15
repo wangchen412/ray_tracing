@@ -47,7 +47,9 @@ void Camera::render(const Hittable& objects) const {
 
 Color Camera::ray_color(const Ray& r, const Hittable& t) {
   HitRecord rec;
-  if (t.hit(r, {0, inf}, rec)) return (rec.normal + Vector(1, 1, 1)) / 2;
+  if (t.hit(r, {0, inf}, rec))
+    return 0.5 *
+           ray_color({rec.position, random_on_hemisphere(r.direction())}, t);
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);
