@@ -50,7 +50,7 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
 
   HitRecord rec;
   if (t.hit(r, {0.001, inf}, rec))
-    return 0.5 * ray_color({rec.position, random_on_hemisphere(r.direction())},
+    return 0.5 * ray_color({rec.position, r.reflection_lambertian(rec.normal)},
                            depth - 1, t);
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);

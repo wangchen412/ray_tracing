@@ -12,6 +12,8 @@ class Ray {
   const Point& origin() const;
   const Vector& direction() const;
   Point at(double t) const;
+  Vector reflection_simple_diffuse() const;
+  Vector reflection_lambertian(const Vector& n) const;
 };
 
 #endif
