@@ -16,7 +16,7 @@ class Camera {
   Ray ray_sample_square(int i, int j) const;
   Vector d_sample_square() const;
   static Color ray_color(const Ray& r, int depth, const Hittable& t);
-  static void write_color(std::ostream& os, const Color& c, int n = 1);
+  void write_file(const Matrix& image) const;
 
  public:
   Camera(int image_width, int image_height);

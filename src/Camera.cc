@@ -20,29 +20,33 @@ Ray Camera::ray_sample_square(int i, int j) const {
   return {center_, at(i, j) + d_sample_square() - center_};
 }
 
-void Camera::write_color(std::ostream& os, const Color& c, int n) {
-  Interval interval(0, 0.999);
-  auto s = 1.0 / n;
-  os << static_cast<int>(256 * interval.clamp(c[0] * s)) << ' '
-     << static_cast<int>(256 * interval.clamp(c[1] * s)) << ' '
-     << static_cast<int>(256 * interval.clamp(c[2] * s)) << '\n';
+void Camera::write_file(const Matrix& image) const {
+  auto file = std::ofstream("image.ppm");
+  file << "P3\n" << image_width_ << ' ' << image_height_ << "\n255\n";
+  for (int i = 0; i < image.cols(); ++i)
+    file << static_cast<int>(256 * image(0, i)) << ' '
+         << static_cast<int>(256 * image(1, i)) << ' '
+         << static_cast<int>(256 * image(2, i)) << '\n';
+  file.close();
 }
 
 void Camera::render(const Hittable& objects) const {
-  auto file = std::ofstream("image.ppm");
-  file << "P3\n" << image_width_ << ' ' << image_height_ << "\n255\n";
+  Matrix image(3, image_height_ * image_width_);
+  std::clog << "Rending..." << std::endl;
+#pragma omp parallel for
   for (int j = 0; j < image_height_; ++j) {
-    std::clog << "\rScanlines remaining: " << (image_height_ - j) << ' '
-              << std::flush;
     for (int i = 0; i < image_width_; ++i) {
       Color c(0, 0, 0);
       for (int k = 0; k < samples_; ++k)
         c += ray_color(ray_sample_square(i, j), max_depth_, objects);
-      write_color(file, c, samples_);
+      c /= samples_;
+      Interval::unit.clamp(c);
+      image.col(j * image_width_ + i) = c;
     }
   }
-  std::clog << "\rDone!                    " << std::endl;
-  file.close();
+  std::clog << "Rendering done. Writing file..." << std::endl;
+  write_file(image);
+  std::clog << "All done!" << std::endl;
 }
 
 Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {

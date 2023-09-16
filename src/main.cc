@@ -5,8 +5,11 @@
 #include "HittableList.h"
 #include "Ray.h"
 #include "Sphere.h"
+#include "omp.h"
 
 int main() {
+  omp_set_num_threads(8);
+  
   // Image
   auto aspect_ratio = 16.0 / 9.0;
   int image_width = 400;

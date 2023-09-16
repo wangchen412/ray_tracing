@@ -6,6 +6,7 @@
 #include <limits>
 #include <random>
 
+using Matrix = Eigen::MatrixXd;
 using Vector = Eigen::Vector3d;
 using Point = Vector;
 using Color = Vector;
