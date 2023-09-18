@@ -40,6 +40,7 @@ void Camera::render(const Hittable& objects) const {
       for (int k = 0; k < samples_; ++k)
         c += ray_color(ray_sample_square(i, j), max_depth_, objects);
       c /= samples_;
+      c = c.cwiseSqrt();
       Interval::unit.clamp(c);
       image.col(j * image_width_ + i) = c;
     }
