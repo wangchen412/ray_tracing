@@ -1,8 +1,9 @@
 #include "Camera.h"
-#include "Materials/Material.h"
 
 #include <fstream>
 #include <iostream>
+
+#include "Materials/Material.h"
 
 Camera::Camera(int image_width, int image_height)
     : image_width_(image_width), image_height_(image_height) {
@@ -55,12 +56,12 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
   if (depth <= 0) return {};
 
   HitRecord rec;
-  if (t.hit(r, {0.001, inf}, rec)) 
-  {
+  if (t.hit(r, {0.001, inf}, rec)) {
     Ray scattered;
-    Color c;
-    rec.material->scatter(r, rec, c, scattered);
-    return 0.5 * ray_color(scattered, depth - 1, t);
+    Color attenuation;
+    if (rec.material->scatter(r, rec, attenuation, scattered))
+      return attenuation.cwiseProduct(ray_color(scattered, depth - 1, t));
+    return {};
   }
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);

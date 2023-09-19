@@ -4,9 +4,12 @@
 #include "Camera.h"
 #include "HittableList.h"
 #include "Materials/Material.h"
+#include "Materials/Metal.h"
 #include "Ray.h"
 #include "Sphere.h"
 #include "omp.h"
+
+using std::make_shared;
 
 int main() {
   omp_set_num_threads(8);
@@ -20,11 +23,17 @@ int main() {
   Camera camera(image_width, image_height);
 
   // Material
-  auto mat = std::make_shared<Lambertian>(Color());
+  auto mat_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+  auto mat_center = make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
+  auto mat_left = make_shared<Metal>(Color(0.8, 0.8, 0.8));
+  auto mat_right = make_shared<Metal>(Color(0.8, 0.6, 0.2));
 
   // Objects
-  HittableList objects(std::make_shared<Sphere>(Point(0, 0, -1), 0.5, mat));
-  objects.add(std::make_shared<Sphere>(Point(0, -100.5, -1), 100, mat));
+  HittableList objects;
+  objects.add(make_shared<Sphere>(Point(0, -100.5, -1), 100, mat_ground));
+  objects.add(make_shared<Sphere>(Point(0, 0, -1), 0.5, mat_center));
+  objects.add(make_shared<Sphere>(Point(-1, 0, -1), 0.5, mat_left));
+  objects.add(make_shared<Sphere>(Point(1, 0, -1), 0.5, mat_right));
 
   // Render
   camera.render(objects);

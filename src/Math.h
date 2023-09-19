@@ -39,6 +39,10 @@ inline Vector random_on_hemisphere(const Vector& n) {
   return n.dot(v) > 0 ? v : -v;
 }
 
+inline Vector reflect(const Vector& v, const Vector& n) {
+  return v - v.dot(n) * n * 2;
+}
+
 inline bool near_zero(const Vector& v) {
   return v.x() < epsilon && v.y() < epsilon && v.z() < epsilon;
 }
