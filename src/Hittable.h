@@ -3,6 +3,7 @@
 
 #include "Interval.h"
 #include "Ray.h"
+#include <memory>
 
 class Material;
 using Material_ptr = std::shared_ptr<Material>;
