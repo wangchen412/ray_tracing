@@ -1,0 +1,5 @@
+function(add_lib lib)
+  file(GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cc")
+  add_library(${lib} ${sources})
+  target_link_libraries(${lib} Eigen3::Eigen OpenMP::OpenMP_CXX)
+endfunction()

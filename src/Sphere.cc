@@ -1,7 +1,7 @@
 #include "Sphere.h"
 
-Sphere::Sphere(const Point& center, double radius)
-    : center_(center), radius_(radius) {}
+Sphere::Sphere(const Point& center, double radius, Material_ptr material)
+    : center_(center), radius_(radius), material_(material) {}
 
 bool Sphere::hit(const Ray& ray, const Interval& interval,
                  HitRecord& rec) const {
@@ -23,6 +23,7 @@ bool Sphere::hit(const Ray& ray, const Interval& interval,
   rec.t = root;
   rec.position = ray.at(root);
   rec.set_face_normal(ray, *this);
+  rec.material = material_;
 
   return true;
 }

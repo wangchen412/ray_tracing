@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Materials/Material.h"
 
 #include <fstream>
 #include <iostream>
@@ -32,7 +33,7 @@ void Camera::write_file(const Matrix& image) const {
 
 void Camera::render(const Hittable& objects) const {
   Matrix image(3, image_height_ * image_width_);
-  std::clog << "Rending..." << std::endl;
+  std::clog << "Rendering..." << std::endl;
 #pragma omp parallel for
   for (int j = 0; j < image_height_; ++j) {
     for (int i = 0; i < image_width_; ++i) {
@@ -54,9 +55,13 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
   if (depth <= 0) return {};
 
   HitRecord rec;
-  if (t.hit(r, {0.001, inf}, rec))
-    return 0.5 * ray_color({rec.position, r.reflection_lambertian(rec.normal)},
-                           depth - 1, t);
+  if (t.hit(r, {0.001, inf}, rec)) 
+  {
+    Ray scattered;
+    Color c;
+    rec.material->scatter(r, rec, c, scattered);
+    return 0.5 * ray_color(scattered, depth - 1, t);
+  }
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
   return (1.0 - a) * Color{1, 1, 1} + a * Color(0.5, 0.7, 1);

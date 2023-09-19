@@ -13,6 +13,7 @@ using Color = Vector;
 
 const double inf = std::numeric_limits<double>::infinity();
 const double pi = 3.1415926535897932385;
+const double epsilon = 1e-8;
 
 inline double rad(double deg) { return deg * pi / 180; }
 inline double deg(double rad) { return rad * 180 / pi; }
@@ -36,6 +37,10 @@ inline Vector random_unit_vector() {
 inline Vector random_on_hemisphere(const Vector& n) {
   auto v = random_unit_vector();
   return n.dot(v) > 0 ? v : -v;
+}
+
+inline bool near_zero(const Vector& v) {
+  return v.x() < epsilon && v.y() < epsilon && v.z() < epsilon;
 }
 
 #endif

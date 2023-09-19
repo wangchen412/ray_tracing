@@ -4,11 +4,15 @@
 #include "Interval.h"
 #include "Ray.h"
 
+class Material;
+using Material_ptr = std::shared_ptr<Material>;
+
 struct HitRecord {
   double t;
   Point position;
   Vector normal;
   bool front_face;
+  Material_ptr material;
 
   template <typename T>
   void set_face_normal(const Ray& ray, const T& hittable) {

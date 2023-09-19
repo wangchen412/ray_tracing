@@ -1,6 +1,7 @@
+add_subdirectory(Materials)
+set(libs "Materials")
+
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cc")
 add_executable(rt ${sources})
-target_link_libraries (rt Eigen3::Eigen)
-if(OpenMP_CXX_FOUND)
-    target_link_libraries(rt OpenMP::OpenMP_CXX)
-endif()
+target_link_libraries(rt ${libs} ${libs})
+target_link_libraries(rt Eigen3::Eigen OpenMP::OpenMP_CXX)
