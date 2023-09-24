@@ -11,6 +11,11 @@ using Vector = Eigen::Vector3d;
 using Point = Vector;
 using Color = Vector;
 
+using std::abs;
+using std::max;
+using std::min;
+using std::sqrt;
+
 const double inf = std::numeric_limits<double>::infinity();
 const double pi = 3.1415926535897932385;
 const double epsilon = 1e-8;
@@ -41,6 +46,13 @@ inline Vector random_on_hemisphere(const Vector& n) {
 
 inline Vector reflect(const Vector& v, const Vector& n) {
   return v - v.dot(n) * n * 2;
+}
+
+inline Vector refract(const Vector& v, const Vector& n, double index_ratio) {
+  auto cos_theta = min(-v.dot(n), 1.0);
+  auto r_x = index_ratio * (v + cos_theta * n);
+  auto r_y = -sqrt(abs(1.0 - r_x.squaredNorm())) * n;
+  return r_x + r_y;
 }
 
 inline bool near_zero(const Vector& v) {

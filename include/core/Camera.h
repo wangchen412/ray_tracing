@@ -7,7 +7,7 @@ class Hittable;
 
 class Camera {
   Point center_{0, 0, 0};
-  int image_width_, image_height_, samples_{10}, max_depth_{10};
+  int image_width_, image_height_, samples_{30}, max_depth_{30};
   double focal_{1}, height_{2}, width_;
   Vector u_, v_, du_, dv_;
   Point upper_left_, pixel_zero_;
