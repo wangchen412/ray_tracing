@@ -1,8 +1,9 @@
 #ifndef RT_CAMERA_H
 #define RT_CAMERA_H
 
-#include "Hittable.h"
 #include "Ray.h"
+
+class Hittable;
 
 class Camera {
   Point center_{0, 0, 0};

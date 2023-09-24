@@ -1,6 +1,12 @@
 #include "Sphere.h"
 
-Sphere::Sphere(const Point& center, double radius, Material_ptr material)
+#include "HitRecord.h"
+#include "Interval.h"
+#include "Material.h"
+#include "Ray.h"
+
+Sphere::Sphere(const Point& center, double radius,
+               std::shared_ptr<Material> material)
     : center_(center), radius_(radius), material_(material) {}
 
 bool Sphere::hit(const Ray& ray, const Interval& interval,

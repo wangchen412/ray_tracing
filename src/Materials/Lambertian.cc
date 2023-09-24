@@ -1,5 +1,7 @@
-#include "../Hittable.h"
-#include "Material.h"
+#include "Lambertian.h"
+
+#include "HitRecord.h"
+#include "Ray.h"
 
 Lambertian::Lambertian(const Color& albedo) : albedo_(albedo) {}
 

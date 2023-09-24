@@ -1,7 +1,8 @@
+add_subdirectory(core)
+add_subdirectory(Hittables)
 add_subdirectory(Materials)
-set(libs "Materials")
+set(libs "Hittables;Materials;core")
 
-file(GLOB_RECURSE sources CONFIGURE_DEPENDS "*.cc")
-add_executable(rt ${sources})
+add_executable(rt main.cc)
 target_link_libraries(rt ${libs})
 target_link_libraries(rt Eigen3::Eigen OpenMP::OpenMP_CXX)

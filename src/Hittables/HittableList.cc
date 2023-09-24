@@ -1,7 +1,13 @@
 #include "HittableList.h"
 
-HittableList::HittableList(Hittable_ptr object) { add(object); }
-void HittableList::add(Hittable_ptr object) { objects_.push_back(object); }
+#include "HitRecord.h"
+#include "Interval.h"
+#include "Material.h"
+#include "Ray.h"
+
+void HittableList::add(std::shared_ptr<Hittable> object) {
+  objects_.push_back(object);
+}
 void HittableList::clear() { objects_.clear(); }
 bool HittableList::hit(const Ray& ray, const Interval& interval,
                        HitRecord& rec) const {

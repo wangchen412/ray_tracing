@@ -1,13 +1,18 @@
+#include <memory>
+
 #include "Hittable.h"
-#include "Ray.h"
+#include "Math.h"
+
+class Material;
 
 class Sphere : public Hittable {
   Point center_;
   double radius_;
-  Material_ptr material_;
+  std::shared_ptr<Material> material_;
 
  public:
-  Sphere(const Point& center, double radius, Material_ptr material);
+  Sphere(const Point& center, double radius,
+         std::shared_ptr<Material> material);
   bool hit(const Ray& ray, const Interval& interval,
            HitRecord& rec) const override;
   Vector normal(const Point& position) const;

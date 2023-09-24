@@ -1,7 +1,5 @@
 #include "Interval.h"
 
-#include "Math.h"
-
 const Interval Interval::empty;
 const Interval Interval::universe(-inf, inf);
 const Interval Interval::unit(0, 0.999);

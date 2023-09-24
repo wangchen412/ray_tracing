@@ -1,19 +1,18 @@
-#ifndef RT_HITTABLE_H
-#define RT_HITTABLE_H
+#ifndef RT_HITRECORD_H
+#define RT_HITRECORD_H
 
-#include "Interval.h"
-#include "Ray.h"
 #include <memory>
 
+#include "Ray.h"
+
 class Material;
-using Material_ptr = std::shared_ptr<Material>;
 
 struct HitRecord {
   double t;
   Point position;
   Vector normal;
   bool front_face;
-  Material_ptr material;
+  std::shared_ptr<Material> material;
 
   template <typename T>
   void set_face_normal(const Ray& ray, const T& hittable) {
@@ -21,12 +20,6 @@ struct HitRecord {
     front_face = ray.direction().dot(outward_normal) < 0;
     normal = front_face ? outward_normal : -outward_normal;
   }
-};
-
-class Hittable {
- public:
-  virtual bool hit(const Ray& ray, const Interval& interval,
-                   HitRecord& rec) const = 0;
 };
 
 #endif

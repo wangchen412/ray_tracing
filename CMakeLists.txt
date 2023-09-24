@@ -11,4 +11,9 @@ project(ray_tracing)
 find_package(Eigen3 3.4 REQUIRED NO_MODULE)
 find_package(OpenMP)
 
+include_directories(include)
+include_directories(include/core)
+include_directories(include/Hittables)
+include_directories(include/Materials)
+
 add_subdirectory(src)

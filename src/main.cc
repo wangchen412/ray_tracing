@@ -2,11 +2,9 @@
 #include <iostream>
 
 #include "Camera.h"
-#include "HittableList.h"
-#include "Materials/Material.h"
-#include "Materials/Metal.h"
+#include "Hittables.h"
+#include "Materials.h"
 #include "Ray.h"
-#include "Sphere.h"
 #include "omp.h"
 
 using std::make_shared;

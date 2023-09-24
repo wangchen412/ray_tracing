@@ -3,7 +3,10 @@
 #include <fstream>
 #include <iostream>
 
-#include "Materials/Material.h"
+#include "HitRecord.h"
+#include "Hittable.h"
+#include "Interval.h"
+#include "Material.h"
 
 Camera::Camera(int image_width, int image_height)
     : image_width_(image_width), image_height_(image_height) {

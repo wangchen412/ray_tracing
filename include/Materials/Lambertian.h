@@ -1,15 +1,9 @@
-#ifndef RT_MATERIAL_H
-#define RT_MATERIAL_H
+#ifndef RT_LAMBERTIAN_H
+#define RT_LAMBERTIAN_H
 
-#include "../Ray.h"
+#include "Material.h"
 
 class HitRecord;
-
-class Material {
- public:
-  virtual bool scatter(const Ray& incident, const HitRecord& rec, Color& atten,
-                       Ray& scattered) const = 0;
-};
 
 class Lambertian : public Material {
   Color albedo_;

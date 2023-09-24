@@ -6,17 +6,11 @@
 
 #include "Hittable.h"
 
-using Hittable_ptr = std::shared_ptr<Hittable>;
-using Hittable_ptrs = std::vector<Hittable_ptr>;
-
 class HittableList : public Hittable {
-  Hittable_ptrs objects_;
+  std::vector<std::shared_ptr<Hittable>> objects_;
 
  public:
-  HittableList() {}
-  HittableList(Hittable_ptr object);
-
-  void add(Hittable_ptr object);
+  void add(std::shared_ptr<Hittable> object);
   void clear();
 
   bool hit(const Ray& ray, const Interval& interval,
