@@ -33,6 +33,7 @@ int main() {
   objects.add(make_shared<Sphere>(Point(0, -100.5, -1), 100, mat_ground));
   objects.add(make_shared<Sphere>(Point(0, 0, -1), 0.5, mat_center));
   objects.add(make_shared<Sphere>(Point(-1, 0, -1), 0.5, mat_left));
+  objects.add(make_shared<Sphere>(Point(-1, 0, -1), -0.4, mat_left));
   objects.add(make_shared<Sphere>(Point(1, 0, -1), 0.5, mat_right));
 
   // Render
