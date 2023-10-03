@@ -56,7 +56,7 @@ inline Vector refract(const Vector& v, const Vector& n, double index_ratio) {
 }
 
 inline bool near_zero(const Vector& v) {
-  return v.x() < epsilon && v.y() < epsilon && v.z() < epsilon;
+  return abs(v.x()) < epsilon && abs(v.y()) < epsilon && abs(v.z()) < epsilon;
 }
 
 #endif
