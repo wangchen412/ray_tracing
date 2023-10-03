@@ -10,6 +10,8 @@
 
 Camera::Camera(int image_width, int image_height)
     : image_width_(image_width), image_height_(image_height) {
+  auto h = tan(rad(vfov_ / 2));
+  height_ = 2 * h * focal_;
   width_ = height_ * image_width / image_height;
   u_ = Vector(width_, 0, 0);
   v_ = Vector(0, -height_, 0);
