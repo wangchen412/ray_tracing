@@ -40,7 +40,9 @@ void Camera::write_file(const Matrix& image) const {
 void Camera::render(const Hittable& objects) const {
   Matrix image(3, image_height_ * image_width_);
   std::clog << "Rendering..." << std::endl;
-#pragma omp parallel for
+
+  int remaining = image_height_;
+#pragma omp parallel for shared(remaining)
   for (int j = 0; j < image_height_; ++j) {
     for (int i = 0; i < image_width_; ++i) {
       Color c(0, 0, 0);
@@ -51,8 +53,11 @@ void Camera::render(const Hittable& objects) const {
       Interval::unit.clamp(c);
       image.col(j * image_width_ + i) = c;
     }
+    --remaining;
+    if (omp_get_thread_num() == 0)
+      std::clog << "\rScanlines remaining: " << remaining << ' ' << std::flush;
   }
-  std::clog << "Rendering done. Writing file..." << std::endl;
+  std::clog << "\rRendering done. Writing file..." << std::endl;
   write_file(image);
   std::clog << "All done!" << std::endl;
 }
