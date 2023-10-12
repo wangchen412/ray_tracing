@@ -9,17 +9,7 @@
 #include "Material.h"
 
 Camera::Camera(int image_width, int image_height)
-    : image_width_(image_width), image_height_(image_height) {
-  auto h = tan(rad(vfov_ / 2));
-  height_ = 2 * h * focal_;
-  width_ = height_ * image_width / image_height;
-  u_ = Vector(width_, 0, 0);
-  v_ = Vector(0, -height_, 0);
-  du_ = u_ / image_width;
-  dv_ = v_ / image_height;
-  upper_left_ = center_ - Vector(width_ / 2, -height_ / 2, focal_);
-  pixel_zero_ = upper_left_ + (du_ + dv_) * 2;
-}
+    : image_width_(image_width), image_height_(image_height) {}
 
 auto Camera::at(int i, int j) const { return i * du_ + j * dv_ + pixel_zero_; }
 Ray Camera::ray(int i, int j) const { return {center_, at(i, j) - center_}; }
@@ -81,3 +71,28 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
 Vector Camera::d_sample_square() const {
   return du_ * (random_double() - 0.5) + dv_ * (random_double() - 0.5);
 }
+
+void Camera::set_position(const Vector& look_from, const Vector& look_at,
+                          double vfov, const Vector& vup) {
+  center_ = look_from;
+  look_at_ = look_at;
+  vfov_ = vfov;
+  vup_ = vup;
+
+  double focal_length = (center_ - look_at_).norm();
+  height_ = 2 * tan(rad(vfov_ / 2)) * focal_length;
+  width_ = height_ * image_width_ / image_height_;
+
+  auto w = (center_ - look_at_) / focal_length;
+  auto u = vup_.cross(w).normalized();
+  auto v = w.cross(u);
+
+  du_ = u * width_ / image_width_;
+  dv_ = -v * height_ / image_height_;
+
+  auto upper_left =
+      center_ - u * width_ / 2 + v * height_ / 2 - w * focal_length;
+  pixel_zero_ = upper_left + (du_ + dv_) / 2;
+}
+
+Point Camera::get_center() const { return center_; }
