@@ -9,9 +9,10 @@ class Camera {
   Point center_, look_at_, pixel_zero_;
   int image_width_, image_height_, samples_{40}, max_depth_{20};
   double height_, width_, vfov_{90};
-  Vector du_, dv_, vup_;
+  Vector vup_;
+  Plane view_port_;
 
-  auto at(int i, int j) const;
+  Point at(int i, int j) const;
   Ray ray(int i, int j) const;
   Ray ray_sample_square(int i, int j) const;
   Vector d_sample_square() const;

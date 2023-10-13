@@ -8,6 +8,8 @@
 
 using Matrix = Eigen::MatrixXd;
 using Vector = Eigen::Vector3d;
+using Plane = Eigen::Matrix<double, 3, 2>;
+using Coord = Eigen::Vector2d;
 using Point = Vector;
 using Color = Vector;
 
