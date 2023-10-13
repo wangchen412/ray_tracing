@@ -77,14 +77,15 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
 }
 
 void Camera::set_position(const Vector& look_from, const Vector& look_at,
-                          double vfov, double df_angle, const Vector& vup) {
+                          double vfov, double df_angle, double focus_shift,
+                          const Vector& vup) {
   center_ = look_from;
   look_at_ = look_at;
   vfov_ = vfov;
   df_angle_ = df_angle;
   vup_ = vup;
 
-  double focal_dist = (center_ - look_at_).norm() + focus_shift_dist_;
+  double focal_dist = (center_ - look_at_).norm() + focus_shift;
   height_ = 2 * tan(rad(vfov_ / 2)) * focal_dist;
   width_ = height_ * image_width_ / image_height_;
 
@@ -105,3 +106,8 @@ void Camera::set_position(const Vector& look_from, const Vector& look_at,
 }
 
 Point Camera::get_center() const { return center_; }
+
+void Camera::set_quality(int num_samples, int max_depth) {
+  samples_ = num_samples;
+  max_depth_ = max_depth;
+}

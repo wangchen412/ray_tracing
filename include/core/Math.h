@@ -34,6 +34,11 @@ inline double random_double(double min, double max) {
   return min + random_double() * (max - min);
 }
 
+inline Vector random_vector(double min, double max) {
+  return {random_double(min, max), random_double(min, max),
+          random_double(min, max)};
+}
+
 template <int n>
 Eigen::Vector<double, n> random_unit_vector() {
   Eigen::Vector<double, n> v;

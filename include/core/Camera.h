@@ -7,8 +7,8 @@ class Hittable;
 
 class Camera {
   Point center_, look_at_, pixel_zero_;
-  int image_width_, image_height_, samples_{40}, max_depth_{20};
-  double height_, width_, vfov_{90}, df_angle_{0}, focus_shift_dist_{0};
+  int image_width_, image_height_, samples_{10}, max_depth_{20};
+  double height_, width_, vfov_{90}, df_angle_{0};
   Vector vup_;
   Plane film_, lens_;
 
@@ -22,7 +22,8 @@ class Camera {
   void render(const Hittable& objects) const;
   void set_position(const Vector& look_from, const Vector& look_at,
                     double vfov = 90, double defocus_angle = 0,
-                    const Vector& vup = {0, 1, 0});
+                    double focus_shift = 0, const Vector& vup = {0, 1, 0});
+  void set_quality(int num_samples, int max_depth);
   Point get_center() const;
 };
 
