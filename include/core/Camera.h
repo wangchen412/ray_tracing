@@ -8,14 +8,12 @@ class Hittable;
 class Camera {
   Point center_, look_at_, pixel_zero_;
   int image_width_, image_height_, samples_{40}, max_depth_{20};
-  double height_, width_, vfov_{90};
+  double height_, width_, vfov_{90}, df_angle_{0}, focus_shift_dist_{0};
   Vector vup_;
-  Plane view_port_;
+  Plane film_, lens_;
 
   Point at(int i, int j) const;
   Ray ray(int i, int j) const;
-  Ray ray_sample_square(int i, int j) const;
-  Vector d_sample_square() const;
   static Color ray_color(const Ray& r, int depth, const Hittable& t);
   void write_file(const Matrix& image) const;
 
@@ -23,7 +21,8 @@ class Camera {
   Camera(int image_width, int image_height);
   void render(const Hittable& objects) const;
   void set_position(const Vector& look_from, const Vector& look_at,
-                    double vfov = 90, const Vector& vup = {0, 1, 0});
+                    double vfov = 90, double defocus_angle = 0,
+                    const Vector& vup = {0, 1, 0});
   Point get_center() const;
 };
 

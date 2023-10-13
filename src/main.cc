@@ -19,7 +19,7 @@ int main() {
 
   // Camera
   Camera camera(image_width, image_height);
-  camera.set_position({-2, 2, 1}, {0, 0, -1}, 20);
+  camera.set_position({-2, 2, 1}, {0, 0, -1}, 20, 10);
 
   // Material
   auto material_ground = make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
