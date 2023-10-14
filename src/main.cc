@@ -20,8 +20,8 @@ int main() {
 
   // Camera
   Camera camera(image_width, image_height);
-  camera.set_position({13, 2, 3}, {0, 0, 0}, 20, 0, -3.5);
-  camera.set_quality(500, 50);
+  camera.set_position({13, 2, 3}, {0, 0, 0}, 20, 0.6, -3.5);
+  camera.set_quality(50, 50);
 
   // Materials
   auto material0 = make_shared<Lambertian>(Color(0.5, 0.5, 0.5));

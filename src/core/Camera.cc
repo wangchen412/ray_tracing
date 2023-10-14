@@ -40,7 +40,7 @@ void Camera::render(const Hittable& objects) const {
   std::clog << "Rendering..." << std::endl;
 
   int remaining = image_height_;
-#pragma omp parallel for shared(remaining)
+#pragma omp parallel for shared(remaining) schedule(dynamic)
   for (int j = 0; j < image_height_; ++j) {
     for (int i = 0; i < image_width_; ++i) {
       Color c(0, 0, 0);
@@ -61,7 +61,7 @@ void Camera::render(const Hittable& objects) const {
 }
 
 Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
-  if (depth <= 0) return {};
+  if (depth <= 0) return {0, 0, 0};
 
   HitRecord rec;
   if (t.hit(r, {0.001, inf}, rec)) {
@@ -69,7 +69,7 @@ Color Camera::ray_color(const Ray& r, int depth, const Hittable& t) {
     Color attenuation;
     if (rec.material->scatter(r, rec, attenuation, scattered))
       return attenuation.cwiseProduct(ray_color(scattered, depth - 1, t));
-    return {};
+    return {0, 0, 0};
   }
 
   auto a = 0.5 * (r.direction().normalized().y() + 1);
