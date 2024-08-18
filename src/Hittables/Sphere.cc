@@ -7,11 +7,20 @@
 
 Sphere::Sphere(const Point& center, double radius,
                std::shared_ptr<Material> material)
-    : center_(center), radius_(radius), material_(material) {}
+    : center_(center),
+      radius_(radius),
+      material_(material),
+      is_moving_(false) {}
+
+Sphere::Sphere(const Point& center1, const Point& center2, double radius,
+               std::shared_ptr<Material> material)
+    : center_(center1), radius_(radius), material_(material), is_moving_(true) {
+  center_vec_ = center2 - center1;
+}
 
 bool Sphere::hit(const Ray& ray, const Interval& interval,
                  HitRecord& rec) const {
-  auto d = ray.origin() - center_;
+  auto d = ray.origin() - center(ray.time());
   auto a = ray.direction().squaredNorm();
   auto h = ray.direction().dot(d);
   auto c = d.squaredNorm() - radius_ * radius_;
@@ -36,4 +45,8 @@ bool Sphere::hit(const Ray& ray, const Interval& interval,
 
 Vector Sphere::normal(const Point& position) const {
   return (position - center_) / radius_;
+}
+
+Point Sphere::center(double time) const {
+  return is_moving_ ? center_ + center_vec_ * time : center_;
 }
